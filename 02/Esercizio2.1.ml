@@ -2,4 +2,5 @@
 
 (* int -> int * int *)
 let ultime_cifre x =
-  let modulo = abs x in (modulo/10 mod 10, modulo mod 10);
+  let modulo = abs x in
+  (modulo/10 mod 10, modulo mod 10)
