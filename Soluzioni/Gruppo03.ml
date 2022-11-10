@@ -1,4 +1,4 @@
-*------------- Gruppo3 -------------*)
+(*------------- Gruppo3 -------------*)
 
 
 (*============ Es1:somma-di-ore =============*)
@@ -19,12 +19,12 @@ let somma_minuti m1 m2 =
 (* somma_ore : (int * int) -> (int * int) -> int * int *)
 let somma_ore (h1,m1) (h2,m2) =
   if verifica (h1,m1) && verifica (h2,m2)
-  then 
+  then
      let (h3,m3) = somma_minuti m1 m2
      in ((h1+h2+h3) mod 24, m3)
   else failwith "Formato scorretto"
 
-(* oppure identifichiamo come sottoproblema utile quello di 
+(* oppure identifichiamo come sottoproblema utile quello di
    "normalizzare" un orario *)
 (*  normalizza : int * int -> int * int *)
 let normalizza (h,m) =
@@ -49,11 +49,11 @@ let read_max () =
       in aux (max n k)
     with _ -> n
   in try aux (read_int())
-     with _ -> failwith "Sequenza vuota" 
+     with _ -> failwith "Sequenza vuota"
 
 (* la funzione precedente implementa un algoritmo iterativo.
    Un algoritmo ricorsivo ragionerebbe cosi':
-   leggo un numero n, 
+   leggo un numero n,
    provo a calcolare il massimo dei successivi,
    se esiste, riporto il massimo tra n e tale numero,
    altrimenti riporto n stesso.
@@ -64,9 +64,9 @@ let rec read_max () =
      let n = read_int()
      in try max n (read_max())
         with _ -> n
-  with _ -> failwith "Sequenza vuota" 
+  with _ -> failwith "Sequenza vuota"
 
-  
+
 (*============ Es2b:read-max-min =============*)
 
 (* read_max_min: unit -> int * int *)
@@ -82,17 +82,17 @@ let read_max_min () =
       let k = read_int()
       in aux (max nmax k) (min nmin k)
     with _ -> (nmax,nmin)
-  in 
+  in
   try let n = read_int() in
           (* attenzione: si deve leggere un solo numero, che e'
              inizialmente sia il minimo che il massimo provvisorio *)
-       aux n n 
-  with _ -> failwith "Sequenza vuota" 
-  
+       aux n n
+  with _ -> failwith "Sequenza vuota"
+
 (* algoritmo ricorsivo, ma poco naturale: *)
   let rec read_max_min ()=
        try(let n= read_int()
-           in try 
+           in try
 	     let (nmax,nmin)=read_max_min()
              in (max n nmax, min n nmin)
            with _ -> (n,n) )
@@ -115,15 +115,15 @@ let rec tutti_minori_di n =
 (* notate che se la sequenza e' vuota (non viene immesso alcun numero),
    il risultato e' true, per due motivi:
    1) non esiste nessun numero immesso maggiore o uguale a n
-   2) se alla fine della ricorsione si riportasse false, 
+   2) se alla fine della ricorsione si riportasse false,
       la funzione riporterebbe sempre false
 *)
 
-(* Per forzare l'esecuzione della chiamata ricorsiva prima di terminare, 
+(* Per forzare l'esecuzione della chiamata ricorsiva prima di terminare,
    si puo' anche usare una let: *)
 let rec tutti_minori_di n =
   try let k = read_int()
-      in let result = tutti_minori_di n 
+      in let result = tutti_minori_di n
          in k < n && result
   with _ -> true
 
@@ -152,7 +152,7 @@ let rec num_di_stringhe () =
 (* algoritmo iterativo, funzione tail recursive *)
 (* aux: int -> int, il suo parametro e' il numero di stringhe gia' lette *)
 let num_di_stringhe () =
-    let rec aux n = 
+    let rec aux n =
       if read_line() = "" then n  (** n e non 0 **)
       else aux (n+1)
   in aux 0               (* inizializzazione del ciclo *)
@@ -168,21 +168,21 @@ let stringa_max () =
   let rec aux smax len =
       let nuova = read_line()
       in if nuova = "" then smax
-         else let nuovalen = String.length nuova 
-              in if len < nuovalen 
+         else let nuovalen = String.length nuova
+              in if len < nuovalen
                  then aux nuova nuovalen
                  else aux smax len
    in aux "" 0
 
 (* a differenza che per la ricerca del minimo in una sequenza di interi,
-   esiste una stringa di lunghezza minima (quella vuota), che si puo' 
+   esiste una stringa di lunghezza minima (quella vuota), che si puo'
    prendere come massimo provvisorio iniziale *)
 
 (* algoritmo ricorsivo: *)
 let rec stringa_max() =
   let nuova = read_line() in
   if nuova="" then ""
-  else 
+  else
     let s=stringa_max() in
     if String.length s > String.length nuova
     then s
@@ -212,7 +212,7 @@ let rec sumto n =
   else n + sumto (n-1)
 (* oppure *)
 let rec sumto = function
-    0 -> 0 
+    0 -> 0
   | n -> n + sumto (n-1)
 
 (* versione iterativa: *)
@@ -228,7 +228,7 @@ let sumto n =
 
 (* power : int  ->  int -> int *)
 (* power n k = potenza k-esima di n, assumendo k e n non negativi *)
-let rec power n k = 
+let rec power n k =
   if k=0 then 1
   else n * power n (k-1)
 
@@ -254,9 +254,9 @@ let rec fib  = function
 (*============ Es3e:maxstring =============*)
 (* maxstring: string -> char *)
 (*  aux : char -> int -> char *)
-(* aux implementa il ciclo di scansione della stringa: 
+(* aux implementa il ciclo di scansione della stringa:
    maxchar e' il massimo carattere
-   incontrato fino a questo punto, i e' la posizione del carattere 
+   incontrato fino a questo punto, i e' la posizione del carattere
    da considerare *)
 
 let maxstring s =
