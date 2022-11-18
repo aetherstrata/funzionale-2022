@@ -1,0 +1,8 @@
+profile = default
+version = 0.24.1
+if-then-else = k-r
+break-before-in = fit-or-vertical
+break-cases = toplevel
+parens-tuple = always
+disambiguate-non-breaking-match
+wrap-comments
