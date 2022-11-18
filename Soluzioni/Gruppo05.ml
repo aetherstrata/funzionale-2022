@@ -10,17 +10,17 @@ let in_labirinto dim (r,c) =
 (* versione iterativa di filter_caselle  *)
 (* Dato che e' richiesta una funzione equivalente a quella definita
    a lezione, si deve conservare l'ordine degli elementi nel risultato.
-   In realta`, per lo scopo al quale e` utilizzata la funzione, 
-   l'ordine degli elementi nel risultato non e' importante, quindi 
+   In realta`, per lo scopo al quale e` utilizzata la funzione,
+   l'ordine degli elementi nel risultato non e' importante, quindi
    si potrebbe anche evitare di rovesciare alla fine la lista *)
 (* filter_caselle: int -> (int * int) list -> (int * int) list *)
-(* aux: (int * int) list -> (int * int) list -> (int * int) list 
+(* aux: (int * int) list -> (int * int) list -> (int * int) list
    aux result clist = (coppie in clist che corrispondono a caselle
                       nel labirinto) @ result
 *)
 let filter_caselle dim caselle =
   let rec aux result = function
-    [] -> result
+  | [] -> result
   | casella::rest ->
       if in_labirinto dim casella
       then aux (casella::result) rest
@@ -57,12 +57,12 @@ let rec split = function
    con la chiave data *)
 let rec cancella k = function
     [] -> []
-  | (x,y)::rest -> 
+  | (x,y)::rest ->
       if x=k then cancella k rest
       else (x,y)::cancella k rest
 
 (* Quando avrete visto le funzioni di ordine superiore sulle
-   liste, tornate a esaminare questo file: 
+   liste, tornate a esaminare questo file:
    si puo' utilizzare List.filter: *)
 let cancella k assoclist =
   List.filter (function (x,_) -> x<>k) assoclist
@@ -81,7 +81,7 @@ let rec union set = function
    tale che setadd x set rappresenta l'unione di {x} con
    l'insieme rappresentato da set *)
 let setadd x set =
-  if List.mem x set then set 
+  if List.mem x set then set
   else x::set
 (* usando setadd possiamo definire union cosi': *)
 let rec union set = function
@@ -94,13 +94,13 @@ let rec intersect set = function
   | x::rest ->
       if List.mem x set then x::intersect set rest
       else intersect set rest
-  
+
 (* differenza *)
 (* setminus set1 set2 = elementi di set1 meno quelli di set2 *)
 let rec setminus set1 set2 =
   match set1 with
     [] -> []
-  | x::rest -> 
+  | x::rest ->
       if List.mem x set2 then setminus rest set2
       else x::setminus rest set2
 
@@ -108,27 +108,27 @@ let rec setminus set1 set2 =
 let rec subset set1 set2 =
   match set1 with
     [] -> true
-  | x::rest -> List.mem x set2 && subset rest set2 
+  | x::rest -> List.mem x set2 && subset rest set2
 
 (*============ Es3:explode-implode =============*)
 (* explode: string -> char list *)
-(* aux : int -> char list 
+(* aux : int -> char list
    aux n = list con gli ultimi n-1 caratteri di s *)
 let explode s =
   let len = String.length s in
   let rec aux n =
     if n >= len then []
-    else s.[n] :: aux (n+1)  
+    else s.[n] :: aux (n+1)
   in aux 0
 
 (* oppure, con aux tail recursive, si inizia dall'ultimo carattere
    e si va all'indietro *)
-(* aux : int -> char list -> char list 
+(* aux : int -> char list -> char list
    aux n result clist = (lista con i primi n+1 caratteri di s) @ result *)
 let explode s =
   let rec aux n result =
     if n < 0 then result
-    else aux (n-1) (s.[n] :: result) 
+    else aux (n-1) (s.[n] :: result)
   in aux (String.length s - 1) []
 
 (* implode: char list -> string *)
@@ -143,7 +143,7 @@ let implode lst =
   let rec aux result = function
       [] -> result
     | c::rest -> aux (result^(String.make 1 c)) rest
-  in aux "" lst 
+  in aux "" lst
 
 (* oppure, programmazione imperativa: *)
 (* loop : int -> char list -> unit
@@ -154,8 +154,8 @@ let implode lst =
   let init = String.create (List.length lst) in
   let rec loop n = function
     | [] -> ()
-    | c::rest -> 
-	init.[n] <- c; 
+    | c::rest ->
+	init.[n] <- c;
 	loop (n+1) rest
   in loop 0 lst;
   init
@@ -165,18 +165,18 @@ let implode lst =
 
 (* intpairs: int -> (int*int) list *)
 
-(* Sottoproblema 1: generare una lista con tutti gli interi compresi tra 
+(* Sottoproblema 1: generare una lista con tutti gli interi compresi tra
    1 e n, in qualsiasi ordine *)
-(* upto : int -> int list, 
+(* upto : int -> int list,
    upto n = [n;n-1;...;1] *)
 let rec upto n =
   if n <= 0 then []
   else n::upto(n-1)
 
-(* sottoproblema 2: dato un elemento y e una lista [x1;x2;...;xn], 
+(* sottoproblema 2: dato un elemento y e una lista [x1;x2;...;xn],
    riportare la lista [(y,x1);(y,x2);....;(y,xn)].
    Vedi esercizio 2c del gruppo 4 *)
-(* pairwith: ’a -> ’b list -> (’a * ’b) list 
+(* pairwith: ’a -> ’b list -> (’a * ’b) list
    pairwith y [x1;x2;...;xn] = [(y,x1);(y,x2);....;(y,xn)] *)
 let rec pairwith y = function
     [] -> []
@@ -195,8 +195,8 @@ let intpairs n =
   in aux range
 
 (* Quando avrete visto le funzioni di ordine superiore sulle
-   liste, tornate a esaminare questo file: e' possibile  
-   utilizzare la funzione List.map: ciascun elemento del range va 
+   liste, tornate a esaminare questo file: e' possibile
+   utilizzare la funzione List.map: ciascun elemento del range va
    "accoppiato" con tutti gli elementi del range *)
 (* pair: 'a -> 'b -> 'a * 'b
    e` la forma prefissa e currificata dell'operazione di costruzione
@@ -204,7 +204,7 @@ let intpairs n =
 let pair x y = (x,y)
 
 let intpairs n =
-  let range = upto n in 
+  let range = upto n in
   (* aux : int -> (int * int) list *)
   (* aux k = lista di tutte le coppie (x,y) con
              x compreso tra 1 e k e y compreso tra 1 e n *)
@@ -217,7 +217,7 @@ let intpairs n =
 let intpairs n =
   let range = upto n in
   List.flatten
-     (List.map 
+     (List.map
         (function k -> List.map (pair k) range)
         range)
 
@@ -233,7 +233,7 @@ let rec trips = function
 (* take: int -> ’a list -> ’a list *)
 let rec take n = function
     [] -> []
-  | x::rest -> 
+  | x::rest ->
       if n=0 then []
       else x::take (n-1) rest
 
@@ -248,7 +248,7 @@ let rec choose n lst =
 (*============ Es7:strike-ball =============*)
 (* strike__ball : 'a list -> 'a list -> int * int *)
 (* aux : int list * int list -> int * int *)
-(* scansione contemporanea delle due liste: 
+(* scansione contemporanea delle due liste:
    aux l1 l2 = (s,b) con s = numero di elementi di l1
        che occorrono anche in test, ma in posizione diversa.
        b = numero di elementi di l1 che occorrono nella stessa
@@ -271,10 +271,10 @@ let strike_ball test guess =
    per un ball e 2 strike *)
 
 (*============ Es8:insert-sort =============*)
-(* inserimento di un elemento in una lista ordinata, 
+(* inserimento di un elemento in una lista ordinata,
    mantenendo l'ordinamento *)
 (* insert: 'a -> 'a list -> 'a list *)
-(* insert x lst = lista che si ottiene inserendo x in lst 
+(* insert x lst = lista che si ottiene inserendo x in lst
                   mantenendo l'ordinamento di lst *)
 let rec insert x = function
      [] -> [x]
