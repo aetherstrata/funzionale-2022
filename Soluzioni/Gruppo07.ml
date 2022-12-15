@@ -120,7 +120,7 @@ let safe (left,right) =
   let aux riva =
     let miss = conta Miss riva
     in miss=0 || miss >= conta Cann riva
-  in aux left & aux right
+  in aux left && aux right
 
 (* (b) *)
 (* eccezione sollevata quando un'azione non e` applicabile *)
