@@ -6,7 +6,7 @@ type expr =
   | Mult of expr * expr
   | Div of expr * expr
 
-(* Esercizio 7.1a *)
+(* Esercizio 8.1a *)
 (* expr -> expr -> bool *)
 let rec subexpr expr1 expr2 =
   expr1 = expr2
@@ -15,7 +15,7 @@ let rec subexpr expr1 expr2 =
         (subexpr e1 expr2) || (subexpr e2 expr2)
       | _ -> false
 
-(* Esercizio 7.1b *)
+(* Esercizio 8.1b *)
 (* expr -> string -> expr -> expr *)
 let rec subst_in_expr expr1 var expr2 =
   match expr1 with
