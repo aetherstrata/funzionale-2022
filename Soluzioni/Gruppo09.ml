@@ -7,7 +7,7 @@ type 'a ntree = Ntree of 'a * 'a ntree list
 
 (*============ Es1:expr =============*)
 
-type multi_expr = 
+type multi_expr =
     MultiInt of int
   | MultiVar of string
   | MultiDiff of multi_expr * multi_expr
@@ -47,7 +47,7 @@ let rec subst expr x nuova =
 let leaf x = Ntree(x,[])
 
 (* Esempio: *)
-let t = Ntree(1,[Ntree(2,[Ntree(3,[leaf 4;
+let t = Ntree(1,[Ntree(2,[Ntree(3,[leaf 17;
                           leaf 5]);
                     Ntree(6,[leaf 7]);
                     leaf 8]);
@@ -70,7 +70,7 @@ let rec postorder = function
    tutti gli append delle radici alla fine delle liste. La funzione
    su liste di alberi ha come argomento anche la radice, che viene
    aggiunta alla fine (senza append): *)
-(* postlist : 'a -> 'a ntree list -> 'a list 
+(* postlist : 'a -> 'a ntree list -> 'a list
     postlist x [t1;...;tn] =
            (postord t1) @ .... @ (postord tn) @ [x] *)
 let rec postord = function
@@ -79,11 +79,11 @@ and postlist x = function
     [] -> [x]
   | t::rest ->
       (postord t) @ (postlist x rest)
-    
+
 (* visita simmetrica *)
 let rec inorder = function
     Ntree(x,[]) -> [x]
-  | Ntree(x,t::rest) -> 
+  | Ntree(x,t::rest) ->
       (inorder t) @ x::(List.flatten(List.map inorder rest))
 
 (*============ Es3:foglie-in-lista =============*)
@@ -97,7 +97,7 @@ let rec foglie_in_lista lista = function
 
 (* seconda alternativa: uso della mutua ricorsione *)
 (* foglie_in_lista : 'a list -> 'a ntree -> bool *)
-(* foglie_bis : 'a list -> 'a ntree list -> bool 
+(* foglie_bis : 'a list -> 'a ntree list -> bool
    foglie_bis lista tlist = true se tutte le foglie di ciascun
          albero in tlist appartengono a lista *)
 let rec foglie_in_lista lista = function
@@ -127,9 +127,9 @@ let rec numfoglie = function
 exception Error
 
 (* listaGuida : int list -> 'a ntree -> 'a *)
-let rec listaGuida lista (Ntree(x,tlist)) = 
+let rec listaGuida lista (Ntree(x,tlist)) =
   match lista with
-    [] -> x 
+    [] -> x
   | x::rest ->
       try listaGuida rest (List.nth tlist x)
       with Failure "nth" -> raise Error
@@ -138,7 +138,7 @@ let rec listaGuida lista (Ntree(x,tlist)) =
 
 (* funzione ausiliaria *)
 (* maxpair : ('a * 'b) list -> 'a * 'b *)
-(* maxpair lst = coppia (x,y) in lst con y massimo 
+(* maxpair lst = coppia (x,y) in lst con y massimo
            fallisce per la lista vuota *)
 let rec maxpair = function
     [] -> failwith "maxpair"
@@ -160,8 +160,8 @@ let rec foglia_costo = function
 let rec tutte_foglie_costi = function
     Ntree(x,[]) -> [(x,x)]
   | Ntree(x,tlist) ->
-      List.map (function (y,c) -> (y,c+x))      
-	(List.flatten 
+      List.map (function (y,c) -> (y,c+x))
+	(List.flatten
 	   (List.map tutte_foglie_costi tlist))
 
 (*============ Es8:ramo-da-lista =============*)
@@ -175,10 +175,10 @@ let rec remove x = function
     [] -> raise NotFound
   | y::rest -> if x=y then rest else y::remove x rest
 
-(* ramo_da_lista : 'a ntree -> 'a list -> 'a -> 'a list 
-   auxlist : 'a list -> 'a -> 'a ntree list -> 'a list 
+(* ramo_da_lista : 'a ntree -> 'a list -> 'a -> 'a list
+   auxlist : 'a list -> 'a -> 'a ntree list -> 'a list
    auxlist lista x tlist = ramo in uno degli alberi in tlist
-         fino a una foglia etichettata da x e che e' una 
+         fino a una foglia etichettata da x e che e' una
          permutazione di lista. Fallimento se non esiste *)
 let rec ramo_da_lista t lista x =
   match t with
@@ -209,10 +209,10 @@ let primo n =
 exception NotFound
 
 (* ramo_di_primi: int ntree -> int *)
-(* auxlist : int ntree list -> int 
+(* auxlist : int ntree list -> int
    auxlist tlist = foglia di un ramo composto solo da numeri primi
         in uno degli alberi in tlist. Fallimento se non esiste *)
-let rec ramo_di_primi = function 
+let rec ramo_di_primi = function
     Ntree(x,[]) ->
       if primo x then x else raise NotFound
   | Ntree(x,tlist) ->
@@ -228,11 +228,11 @@ and auxlist = function
 
 exception NotFound
 
-(* path_non_pred : ('a -> bool) -> 'a ntree -> 'a list 
-   auxlist : ('a -> bool) -> 'a ntree list -> 'a list 
+(* path_non_pred : ('a -> bool) -> 'a ntree -> 'a list
+   auxlist : ('a -> bool) -> 'a ntree list -> 'a list
      auxlist p tlist = ramo in uno degli alberi in tlist
         composto solo da nodi che non soddisfano p *)
-let rec path_non_pred p = function 
+let rec path_non_pred p = function
     Ntree(x,[]) ->
       if p x then raise NotFound else [x]
   | Ntree(x,tlist) ->
@@ -249,15 +249,15 @@ and auxlist p = function
 exception NotFound
 
 (* same_structure : 'a ntree -> 'b ntree -> bool
-   same_list : 'a ntree list -> 'b ntree list -> bool 
+   same_list : 'a ntree list -> 'b ntree list -> bool
    same_list tlist tlist2 = true se tlist e tlist2 hanno lo
          stesso numero di elementi e gli alberi che stanno
          nella stessa posizione in tlist e tlist2 hanno la
          stessa struttura *)
 let rec same_structure (Ntree(_,tlist)) (Ntree(_,tlist2)) =
   same_list tlist tlist2
-and same_list tlist tlist2 = 
-  match (tlist,tlist2) with 
+and same_list tlist tlist2 =
+  match (tlist,tlist2) with
     ([],[]) -> true
   | (t::rest,t1::rest1) ->
       same_structure t t1 && same_list rest rest1
@@ -265,7 +265,7 @@ and same_list tlist tlist2 =
 
 (** oppure **)
 let rec same_structure (Ntree(_,tlist)) (Ntree(_,tlist2)) =
-  try List.for_all 
+  try List.for_all
       (function (t,t') -> same_structure t t')
       (List.combine tlist tlist2)
   with Invalid_argument "List.combine" -> false
@@ -275,12 +275,12 @@ let rec same_structure (Ntree(_,tlist)) (Ntree(_,tlist2)) =
 type col = Rosso | Giallo | Verde | Blu
 type 'a col_assoc = (col * 'a list) list
 (* funzione ausiliaria *)
-(* colore: 'a -> 'a col_assoc -> col 
+(* colore: 'a -> 'a col_assoc -> col
    colore x assoc_colori = colore di x secondo l'associazione
          assoc_colori. Fallisce se x non ha nessun colore *)
 let rec colore x = function
     [] -> failwith "colore"
-  | (c,list)::rest -> 
+  | (c,list)::rest ->
       if List.mem x list then c
       else colore x rest
 
@@ -296,7 +296,7 @@ exception NotFound
 let ramo_colorato x colassoc t =
    (* funzione ausiliaria *)
    (* colore_diverso: 'a -> 'a ntree -> bool *)
-   (* colore_diverso y t = true se la radice di t ha colore diverso 
+   (* colore_diverso y t = true se la radice di t ha colore diverso
       da quello di y *)
   let colore_diverso y (Ntree(r,_)) =
      colore y colassoc <> colore r colassoc in
@@ -305,7 +305,7 @@ let ramo_colorato x colassoc t =
   let rec fromnode  = function
       Ntree(y,[]) ->
 	if x=y then [x] else raise NotFound
-    | Ntree(y,tlist) -> 
+    | Ntree(y,tlist) ->
 	y:: fromlist (List.filter (colore_diverso y) tlist)
         (* la ricerca sui sottoalberi avviene soltanto su
 	   quelli che hanno radice di colore diverso da y *)
