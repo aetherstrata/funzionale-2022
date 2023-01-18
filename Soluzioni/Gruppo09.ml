@@ -47,7 +47,7 @@ let rec subst expr x nuova =
 let leaf x = Ntree(x,[])
 
 (* Esempio: *)
-let t = Ntree(1,[Ntree(2,[Ntree(3,[leaf 17;
+let t = Ntree(1,[Ntree(2,[Ntree(3,[leaf 4;
                           leaf 5]);
                     Ntree(6,[leaf 7]);
                     leaf 8]);
