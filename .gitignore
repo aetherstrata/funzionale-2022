@@ -6,3 +6,6 @@
 *.cmi
 *.cmo
 *.byte
+
+# OCaml switch
+switch/
